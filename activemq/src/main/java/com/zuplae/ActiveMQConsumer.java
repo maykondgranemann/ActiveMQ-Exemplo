@@ -11,7 +11,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class ActiveMQConsumer {
     public static void main(String[] args) {
-        String brokerUrl = "tcp://10.1.1.169:61616"; // Porta do ActiveMQ no Docker
+        String brokerUrl = "failover:(tcp://10.1.1.169:61617,tcp://10.1.1.169:61618)?randomize=true"; // Porta do ActiveMQ no Docker
         String queueName = "MINHA_FILA";
 
         try {

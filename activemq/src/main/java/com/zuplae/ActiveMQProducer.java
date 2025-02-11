@@ -11,12 +11,12 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class ActiveMQProducer {
     public static void main(String[] args) {
-        String brokerUrl = "tcp://10.1.1.169:61616"; // Porta do ActiveMQ 5.x
+        String brokerUrl = "failover:(tcp://10.1.1.169:61617,tcp://10.1.1.169:61618)?randomize=true"; // Porta do ActiveMQ 5.x
         String queueName = "MINHA_FILA";
 
         try {
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(brokerUrl);
-            Connection connection = connectionFactory.createConnection(); // ✅ Deve funcionar agora!
+            Connection connection = connectionFactory.createConnection();
             connection.start();
 
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -25,7 +25,7 @@ public class ActiveMQProducer {
             MessageProducer producer = session.createProducer(destination);
             producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
-            String messageText = "Olá, ActiveMQ!";
+            String messageText = "Olá, ActiveMQ master!";
             TextMessage message = session.createTextMessage(messageText);
             producer.send(message);
 
